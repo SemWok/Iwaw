@@ -11322,3 +11322,35 @@ end
 
 getgenv().Library = Library
 return Library
+-- 1. Inisialisasi Library (Sesuaikan nama variabel Library dengan milik Anda)
+local Library = loadstring(game:HttpGet("URL_SCRIPT_LIBRARY_ANDA"))()
+
+-- 2. Membuat Window Utama
+local Window = Library:CreateWindow({
+    Title = "Nama Script Anda",
+    Center = true,
+    AutoShow = true,
+})
+
+-- 3. Membuat Tab
+local Tab = Window:AddTab("Utama")
+
+-- 4. Membuat Groupbox di dalam Tab
+local Groupbox = Tab:AddLeftGroupbox("Pengaturan")
+
+-- 5. Menambahkan elemen contoh
+Groupbox:AddToggle("MyToggle", {
+    Text = "Aktifkan Fitur X",
+    Default = false,
+    Tooltip = "Ini adalah contoh fitur",
+    Callback = function(Value)
+        print("Fitur aktif: " .. tostring(Value))
+    end
+})
+
+Groupbox:AddButton("Jalankan Fungsi", function()
+    print("Tombol ditekan!")
+end)
+
+-- 6. Penutup (Sangat Penting)
+Library:Init() 
