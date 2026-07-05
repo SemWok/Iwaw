@@ -1,5 +1,5 @@
 -- ============================================================
--- SEMWOK HUB - FINAL FULL VERSION (SOUND PLAYED ONCE)
+-- SEMWOK HUB - FINAL FULL VERSION (FLY SPEED 1000)
 -- ============================================================
 local sound = Instance.new("Sound", workspace); sound.SoundId = "rbxassetid://130485557925287"; sound.Volume = 3; sound.Looped = false; sound:Play()
 
@@ -98,7 +98,7 @@ task.spawn(function()
         if InfoPopup.Visible then
             local gameName = MarketplaceService:GetProductInfo(game.PlaceId).Name
             local serverType = (game.PrivateServerId ~= "" and game.PrivateServerOwnerId ~= 0) and "Private" or "Public"
-            InfoText.Text = "Executor: Mobile (Redfinger)\nDevice: Mobile\nGame: "..gameName.."\nServer: "..serverType.."\nPlayers: "..#Players:GetPlayers().."/"..Players.MaxPlayers.."\nTime: "..math.floor(workspace.DistributedGameTime/60).." min\nUser: "..LocalPlayer.Name
+            InfoText.Text = "Executor: Mobile\nGame: "..gameName.."\nServer: "..serverType.."\nPlayers: "..#Players:GetPlayers().."/"..Players.MaxPlayers.."\nTime: "..math.floor(workspace.DistributedGameTime/60).." min\nUser: "..LocalPlayer.Name
         end
     end
 end)
@@ -109,8 +109,8 @@ local MainContainer = Instance.new("Frame", MainMenu); MainContainer.Size = UDim
 local PlayerContainer = Instance.new("Frame", MainMenu); PlayerContainer.Size = UDim2.new(1, -150, 1, -80); PlayerContainer.Position = UDim2.new(0, 150, 0, 40); PlayerContainer.BackgroundTransparency = 1; PlayerContainer.Visible = false
 
 -- Data Changelog
-local SupportGames = {"MBG DRIVER", "INSIDE BRAINROT HEAD", "LORI'S NIGHTMARE", "BECOME A BRAINROT", "+1 SPEED BRICK ESCAPE", "LOGO FOR SOCCER CARDS", "MERGER A NUKE", "+1 SPEED TITAN ESCAPE", "BE A YOUTUBER", "PHONK CLICKER", "FIND THE BRAINROT MORPHS"}
-local UnsupportGames = {"Yang main asal curi Script", "Testing 1", "Testing 2"}
+local SupportGames = {"MBG DRIVER", "INSIDE BRAINROT HEAD", "LORI'S NIGHTMARE"}
+local UnsupportGames = {"Yang main asal curi Script"}
 local SupportText = Instance.new("TextLabel", ChangelogContainer); SupportText.Size = UDim2.new(0.5, 0, 0, 300); SupportText.Position = UDim2.new(0, 0, 0, 10); SupportText.BackgroundTransparency = 1; SupportText.TextColor3 = Color3.new(1, 1, 1); SupportText.TextXAlignment = Enum.TextXAlignment.Left; SupportText.TextYAlignment = Enum.TextYAlignment.Top; SupportText.Font = Enum.Font.GothamBold; SupportText.TextSize = 12
 local UnsupportText = Instance.new("TextLabel", ChangelogContainer); UnsupportText.Size = UDim2.new(0.5, 0, 0, 300); UnsupportText.Position = UDim2.new(0.5, 0, 0, 10); UnsupportText.BackgroundTransparency = 1; UnsupportText.TextColor3 = Color3.new(1, 1, 1); UnsupportText.TextXAlignment = Enum.TextXAlignment.Left; UnsupportText.TextYAlignment = Enum.TextYAlignment.Top; UnsupportText.Font = Enum.Font.GothamBold; UnsupportText.TextSize = 12
 
@@ -125,7 +125,7 @@ local function RefreshLogs()
 end
 RefreshLogs()
 
--- Fungsi Layout 2 Kolom
+-- Fungsi Layout
 local function CreateBtn(parentFrame, name, varName, callback)
     local btn = Instance.new("TextButton", parentFrame)
     btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40);
@@ -152,13 +152,12 @@ local function UpdateLayout(container)
 end
 
 -- Tab Logic
-ChangelogBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = true; MainContainer.Visible = false; PlayerContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
-MainFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = true; PlayerContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
-PlayerFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = false; PlayerContainer.Visible = true; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35) end)
+ChangelogBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = true; MainContainer.Visible = false; PlayerContainer.Visible = false end)
+MainFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = true; PlayerContainer.Visible = false end)
+PlayerFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = false; PlayerContainer.Visible = true end)
 
 -- Add Buttons
-CreateBtn(MainContainer, "Auto Win Zone 1", "Z1", function() end)
-CreateBtn(MainContainer, "Auto Win Zone 2", "Z2", function() end)
+CreateBtn(MainContainer, "Fly Speed 1000", "FS", function() end)
 CreateBtn(MainContainer, "Auto Rebirth", "RB", function() end)
 CreateBtn(PlayerContainer, "Enable WalkSpeed", "WS", function() end)
 CreateBtn(PlayerContainer, "Anti AFK", "AFK", function() end)
@@ -185,14 +184,25 @@ task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); M
 
 -- Main Logic Loop
 task.spawn(function()
-    local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
-    local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
-    
-    local function FlyTo(x, y, z)
-        local root = getRoot()
-        if not root then return end
-        local bv = root:FindFirstChild("FlyVel") or Instance.new("BodyVelocity", root)
-        bv.Name = "FlyVel"; bv.MaxForce = Vector3.new(1,1,1)*1e6
-        
-        local target = Vector3.new(x, 250, z)
-        local direction
+    local BV, BG
+    while task.wait(0.1) do
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = LocalPlayer.Character.HumanoidRootPart
+            -- Fly Speed Logic
+            if _G.FS then
+                if not BV then
+                    BV = Instance.new("BodyVelocity", hrp); BV.MaxForce = Vector3.new(1/0, 1/0, 1/0); BV.Velocity = Vector3.new(0, 0, 0)
+                    BG = Instance.new("BodyGyro", hrp); BG.MaxTorque = Vector3.new(1/0, 1/0, 1/0); BG.CFrame = hrp.CFrame
+                end
+                BV.Velocity = workspace.CurrentCamera.CFrame.LookVector * 1000
+            else
+                if BV then BV:Destroy(); BV = nil end
+                if BG then BG:Destroy(); BG = nil end
+            end
+            -- Fitur Lain
+            if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
+            if _G.WS and LocalPlayer.Character:FindFirstChild("Humanoid") then LocalPlayer.Character.Humanoid.WalkSpeed = 100 end
+            if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
+        end
+    end
+end)
