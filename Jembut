@@ -160,16 +160,6 @@ PlayerFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visibl
 CreateBtn(MainContainer, "Auto Win Zone 1", "Z1", function() end)
 CreateBtn(MainContainer, "Auto Win Zone 2", "Z2", function() end)
 CreateBtn(MainContainer, "Auto Rebirth", "RB", function() end)
-
--- --- FITUR TAMBAHAN AUTO BUY ---
-local ItemsToBuy = {"Aduite Antlers", "Blue Night Crown", "Golden Fedora", "Emerald Valkyrie", "White Fedora"}
-local SelectedItem = ItemsToBuy[1]
-local Dropdown = Instance.new("TextButton", MainContainer)
-Dropdown.Size = UDim2.new(0.9, 0, 0, 40); Dropdown.Position = UDim2.new(0.05, 0, 0, 150); Dropdown.Text = "Select: "..SelectedItem; Dropdown.BackgroundColor3 = Color3.fromRGB(40,40,40); Dropdown.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", Dropdown).CornerRadius = UDim.new(0, 4)
-local index = 1
-Dropdown.MouseButton1Click:Connect(function() index = (index % #ItemsToBuy) + 1; SelectedItem = ItemsToBuy[index]; Dropdown.Text = "Select: "..SelectedItem end)
-CreateBtn(MainContainer, "Auto Buy Item", "AUTO_BUY", function() end)
-
 CreateBtn(PlayerContainer, "Enable WalkSpeed", "WS", function() end)
 CreateBtn(PlayerContainer, "Anti AFK", "AFK", function() end)
 CreateBtn(PlayerContainer, "Find Empty Server", "ES", function() 
@@ -203,7 +193,6 @@ task.spawn(function()
             if _G.Z2 and getRoot() then getRoot().CFrame = CFrame.new(-168.27, 823.60, 26801.41) end
             if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
             if _G.WS and getHumanoid() then getHumanoid().WalkSpeed = 100 end
-            if _G.AUTO_BUY then pcall(function() RS.BuyRemote:FireServer(SelectedItem) end) end -- GANTI 'BuyRemote' DENGAN NAMA REMOTE ASLI
             if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
         end
     end
