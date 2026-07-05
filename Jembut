@@ -191,14 +191,12 @@ task.spawn(function()
     local function FlyTo(targetPos)
         local root = getRoot()
         if root then
-            local finalPos = targetPos + Vector3.new(0, 20, 0)
             if root:FindFirstChild("FlyVel") then root.FlyVel:Destroy() end
             local bv = Instance.new("BodyVelocity", root)
             bv.Name = "FlyVel"
             bv.MaxForce = Vector3.new(1, 1, 1) * 1e6
-            bv.Velocity = (finalPos - root.Position).Unit * 10
-            task.wait(0.5)
-            bv:Destroy()
+            bv.Velocity = (targetPos - root.Position).Unit * 50
+            task.delay(0.5, function() if bv then bv:Destroy() end end)
         end
     end
 
