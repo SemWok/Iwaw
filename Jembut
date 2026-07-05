@@ -188,22 +188,29 @@ task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
     local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
     
-    local function FlyTo(targetPos)
+    local function FlyFast(targetPos)
         local root = getRoot()
         if root then
+            local speed = 500
             if root:FindFirstChild("FlyVel") then root.FlyVel:Destroy() end
             local bv = Instance.new("BodyVelocity", root)
             bv.Name = "FlyVel"
             bv.MaxForce = Vector3.new(1, 1, 1) * 1e6
-            bv.Velocity = (targetPos - root.Position).Unit * 250
-            task.delay(0.5, function() if bv then bv:Destroy() end end)
+            
+            -- Manuver Naik 150
+            bv.Velocity = ((targetPos + Vector3.new(0, 150, 0)) - root.Position).Unit * speed
+            task.wait(0.3)
+            
+            -- Menuju Target
+            bv.Velocity = (targetPos - root.Position).Unit * speed
+            task.delay(0.3, function() if bv then bv:Destroy() end end)
         end
     end
 
     while task.wait(0.1) do
         if LocalPlayer.Character then
-            if _G.Z1 and getRoot() then FlyTo(Vector3.new(5129.90, 698.84, -2558.50)) end
-            if _G.Z2 and getRoot() then FlyTo(Vector3.new(-168.27, 823.60, 26801.41)) end
+            if _G.Z1 and getRoot() then FlyFast(Vector3.new(5129.90, 698.84, -2558.50)) end
+            if _G.Z2 and getRoot() then FlyFast(Vector3.new(-168.27, 823.60, 26801.41)) end
             if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
             if _G.WS and getHumanoid() then getHumanoid().WalkSpeed = 100 end
             if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
