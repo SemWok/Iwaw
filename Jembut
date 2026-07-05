@@ -197,13 +197,12 @@ task.spawn(function()
             bv.Name = "FlyVel"
             bv.MaxForce = Vector3.new(1, 1, 1) * 1e6
             
-            -- Manuver Naik 250
-            bv.Velocity = ((targetPos + Vector3.new(0, 250, 0)) - root.Position).Unit * speed
-            task.wait(0.3)
+            -- Langsung menuju koordinat dengan ketinggian +250
+            local destination = Vector3.new(targetPos.X, targetPos.Y + 250, targetPos.Z)
+            bv.Velocity = (destination - root.Position).Unit * speed
             
-            -- Menuju Target
-            bv.Velocity = (targetPos - root.Position).Unit * speed
-            task.wait(0.3)
+            -- Tunggu sampai target tercapai
+            task.wait(0.5)
             if bv then bv:Destroy() end
         end
     end
