@@ -88,7 +88,7 @@ local DCBtn = Instance.new("TextButton", SocialContainer); DCBtn.Size = UDim2.ne
 DCBtn.MouseButton1Click:Connect(function() setclipboard("https://discord.gg/semwok") end)
 
 -- Info Popup
-local InfoPopup = Instance.new("Frame", MainMenu); InfoPopup.Size = UDim2.new(0, 250, 0, 150); InfoPopup.Position = UDim2.new(0.5, -125, 0.5, -75); InfoPopup.BackgroundColor3 = Color3.fromRGB(30, 30, 30); InfoPopup.Visible = false; InfoPopup.ZIndex = 50; Instance.new("UICorner", InfoPopup).CornerRadius = UDim.new(0, 8)
+local InfoPopup = Instance.new("Frame", MainMenu); InfoPopup.Size = UDim2.new(0, 999, 0, 150); InfoPopup.Position = UDim2.new(0.5, -125, 0.5, -75); InfoPopup.BackgroundColor3 = Color3.fromRGB(30, 30, 30); InfoPopup.Visible = false; InfoPopup.ZIndex = 50; Instance.new("UICorner", InfoPopup).CornerRadius = UDim.new(0, 8)
 local InfoText = Instance.new("TextLabel", InfoPopup); InfoText.Size = UDim2.new(1, -20, 1, -20); InfoText.Position = UDim2.new(0, 10, 0, 10); InfoText.TextColor3 = Color3.new(1, 1, 1); InfoText.BackgroundTransparency = 1; InfoText.TextXAlignment = Enum.TextXAlignment.Left; InfoText.Font = Enum.Font.Code; InfoText.TextSize = 12; InfoText.Text = ""; InfoText.ZIndex = 51
 local InfoBtn = Instance.new("TextButton", UserFrame); InfoBtn.Size = UDim2.new(1, 0, 1, 0); InfoBtn.BackgroundTransparency = 1; InfoBtn.Text = ""; InfoBtn.MouseButton1Click:Connect(function() InfoPopup.Visible = not InfoPopup.Visible end)
 
@@ -184,13 +184,4 @@ TweenService:Create(ProgressBar, TweenInfo.new(5), {Size = UDim2.new(1, 0, 1, 0)
 task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); MainMenu.Visible = true end end)
 
 -- Main Logic Loop
-task.spawn(function()
-    local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
-    local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
-    
-    local function FlyTo(targetPos)
-        local root = getRoot()
-        if root then
-            if root:FindFirstChild("FlyVel") then root.FlyVel:Destroy() end
-            local bv = Instance.new("BodyVelocity", root)
-            bv.Name = "Fly
+task.
