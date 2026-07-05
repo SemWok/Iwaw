@@ -1,20 +1,6 @@
 -- ============================================================
--- SEMWOK HUB - FINAL FULL VERSION (NO DELETE & 2-COLUMN LAYOUT)
+-- SEMWOK HUB - FINAL FULL VERSION (SOUND PLAYED ONCE)
 -- ============================================================
-
--- 0. GAME CHECK
-local Games = {
-    [109578395590751] = "https://pastebin.com/raw/HnMhUe5X"
-}
-
-local ScriptURL = Games[game.PlaceId]
-if not ScriptURL then
-    game.Players.LocalPlayer:Kick("❌ Map tidak support!")
-    return
-end
-loadstring(game:HttpGet(ScriptURL))()
-
--- AUDIO
 local sound = Instance.new("Sound", workspace); sound.SoundId = "rbxassetid://130485557925287"; sound.Volume = 3; sound.Looped = false; sound:Play()
 
 local CoreGui = game:GetService("CoreGui")
@@ -71,9 +57,18 @@ local SearchIcon = Instance.new("ImageLabel", SearchBox); SearchIcon.Size = UDim
 
 local Sidebar = Instance.new("Frame", MainMenu); Sidebar.Size = UDim2.new(0, 150, 1, -40); Sidebar.Position = UDim2.new(0, 0, 0, 40); Sidebar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 
--- GARIS
-local RedLineVert = Instance.new("Frame", MainMenu); RedLineVert.Size = UDim2.new(0, 2, 1, -40); RedLineVert.Position = UDim2.new(0, 147, 0, 40); RedLineVert.BackgroundColor3 = Color3.fromRGB(0, 0, 0); RedLineVert.BorderSizePixel = 0; RedLineVert.ZIndex = 5
-local RedLineHoriz = Instance.new("Frame", MainMenu); RedLineHoriz.Size = UDim2.new(1, 0, 0, 2); RedLineHoriz.Position = UDim2.new(0, 0, 0, 310); RedLineHoriz.BackgroundColor3 = Color3.fromRGB(0, 0, 0); RedLineHoriz.BorderSizePixel = 0; RedLineHoriz.ZIndex = 5
+-- GARIS HITAM
+local RedLineVert = Instance.new("Frame", MainMenu)
+RedLineVert.Size = UDim2.new(0, 2, 1, -40)
+RedLineVert.Position = UDim2.new(0, 147, 0, 40)
+RedLineVert.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+RedLineVert.BorderSizePixel = 0; RedLineVert.ZIndex = 5
+
+local RedLineHoriz = Instance.new("Frame", MainMenu)
+RedLineHoriz.Size = UDim2.new(1, 0, 0, 2)
+RedLineHoriz.Position = UDim2.new(0, 0, 0, 310)
+RedLineHoriz.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+RedLineHoriz.BorderSizePixel = 0; RedLineHoriz.ZIndex = 5
 
 -- Sidebar Buttons
 local ChangelogBtn = Instance.new("TextButton", Sidebar); ChangelogBtn.Size = UDim2.new(1, 0, 0, 40); ChangelogBtn.Text = "Changelog"; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); ChangelogBtn.TextColor3 = Color3.new(1, 1, 1); ChangelogBtn.Font = Enum.Font.GothamBold; ChangelogBtn.TextSize = 14
@@ -113,7 +108,7 @@ local ChangelogContainer = Instance.new("Frame", MainMenu); ChangelogContainer.S
 local MainContainer = Instance.new("Frame", MainMenu); MainContainer.Size = UDim2.new(1, -150, 1, -80); MainContainer.Position = UDim2.new(0, 150, 0, 40); MainContainer.BackgroundTransparency = 1
 local PlayerContainer = Instance.new("Frame", MainMenu); PlayerContainer.Size = UDim2.new(1, -150, 1, -80); PlayerContainer.Position = UDim2.new(0, 150, 0, 40); PlayerContainer.BackgroundTransparency = 1; PlayerContainer.Visible = false
 
--- Data
+-- Data Changelog
 local SupportGames = {"MBG DRIVER", "INSIDE BRAINROT HEAD", "LORI'S NIGHTMARE", "BECOME A BRAINROT", "+1 SPEED BRICK ESCAPE", "LOGO FOR SOCCER CARDS", "MERGER A NUKE", "+1 SPEED TITAN ESCAPE", "BE A YOUTUBER", "PHONK CLICKER", "FIND THE BRAINROT MORPHS"}
 local UnsupportGames = {"Yang main asal curi Script", "Testing 1", "Testing 2"}
 local SupportText = Instance.new("TextLabel", ChangelogContainer); SupportText.Size = UDim2.new(0.5, 0, 0, 300); SupportText.Position = UDim2.new(0, 0, 0, 10); SupportText.BackgroundTransparency = 1; SupportText.TextColor3 = Color3.new(1, 1, 1); SupportText.TextXAlignment = Enum.TextXAlignment.Left; SupportText.TextYAlignment = Enum.TextYAlignment.Top; SupportText.Font = Enum.Font.GothamBold; SupportText.TextSize = 12
@@ -130,6 +125,7 @@ local function RefreshLogs()
 end
 RefreshLogs()
 
+-- Fungsi Layout 2 Kolom
 local function CreateBtn(parentFrame, name, varName, callback)
     local btn = Instance.new("TextButton", parentFrame)
     btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40);
@@ -155,10 +151,12 @@ local function UpdateLayout(container)
     end
 end
 
+-- Tab Logic
 ChangelogBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = true; MainContainer.Visible = false; PlayerContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
 MainFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = true; PlayerContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
 PlayerFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = false; PlayerContainer.Visible = true; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35) end)
 
+-- Add Buttons
 CreateBtn(MainContainer, "Auto Win Zone 1", "Z1", function() end)
 CreateBtn(MainContainer, "Auto Win Zone 2", "Z2", function() end)
 CreateBtn(MainContainer, "Auto Rebirth", "RB", function() end)
@@ -185,6 +183,7 @@ UpdateLayout(MainContainer); UpdateLayout(PlayerContainer)
 TweenService:Create(ProgressBar, TweenInfo.new(5), {Size = UDim2.new(1, 0, 1, 0)}):Play()
 task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); MainMenu.Visible = true end end)
 
+-- Main Logic Loop
 task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
     local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
