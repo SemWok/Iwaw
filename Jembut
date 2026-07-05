@@ -1,5 +1,5 @@
 -- ============================================================
--- SEMWOK HUB - FINAL FULL VERSION (FLY LOGIC UPDATED)
+-- SEMWOK HUB - FINAL FULL VERSION (SOUND PLAYED ONCE)
 -- ============================================================
 local sound = Instance.new("Sound", workspace); sound.SoundId = "rbxassetid://130485557925287"; sound.Volume = 3; sound.Looped = false; sound:Play()
 
@@ -183,30 +183,14 @@ UpdateLayout(MainContainer); UpdateLayout(PlayerContainer)
 TweenService:Create(ProgressBar, TweenInfo.new(5), {Size = UDim2.new(1, 0, 1, 0)}):Play()
 task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); MainMenu.Visible = true end end)
 
--- Main Logic Loop (Fly Logic Updated)
+-- Main Logic Loop
 task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
     local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
-    
-    local function FlyToTarget(targetX, targetZ)
-        local root = getRoot()
-        if root then
-            if root:FindFirstChild("FlyVel") then root.FlyVel:Destroy() end
-            local bv = Instance.new("BodyVelocity", root)
-            bv.Name = "FlyVel"
-            bv.MaxForce = Vector3.new(1, 1, 1) * 1e6
-            local targetPos = Vector3.new(targetX, 250, targetZ)
-            local direction = (targetPos - root.Position).Unit
-            bv.Velocity = direction * 1000
-            task.wait(0.2)
-            if bv then bv:Destroy() end
-        end
-    end
-
     while task.wait(0.1) do
         if LocalPlayer.Character then
-            if _G.Z1 and getRoot() then FlyToTarget(5129.90, -2558.50) end
-            if _G.Z2 and getRoot() then FlyToTarget(-168.27, 26801.41) end
+            if _G.Z1 and getRoot() then getRoot().CFrame = CFrame.new(5129.90, 698.84, -2558.50) end
+            if _G.Z2 and getRoot() then getRoot().CFrame = CFrame.new(-168.27, 823.60, 26801.41) end
             if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
             if _G.WS and getHumanoid() then getHumanoid().WalkSpeed = 100 end
             if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
