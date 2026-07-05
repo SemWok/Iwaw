@@ -187,10 +187,38 @@ task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); M
 task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
     local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
+    
+    -- Fungsi bawaan untuk membuat efek terbang cepat (Fly / Tween) mulus ke posisi target
+    local function FlyToTarget(targetCFrame)
+        local root = getRoot()
+        if root then
+            local currentTween = root:FindFirstChild("FlyTween")
+            if currentTween then currentTween:Destroy() end
+            
+            local speed = 250 -- Mengatur kecepatan terbang karakter kamu
+            local distance = (root.Position - targetCFrame.Position).Magnitude
+            local duration = distance / speed
+            
+            local info = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+            local tween = TweenService:Create(root, info, {CFrame = targetCFrame})
+            tween.Name = "FlyTween"
+            tween:Play()
+            
+            -- Menahan perulangan utama sampai proses terbang selesai dilakukan
+            tween.Completed:Wait()
+        end
+    end
+
     while task.wait(0.1) do
         if LocalPlayer.Character then
-            if _G.Z1 and getRoot() then getRoot().CFrame = CFrame.new(5129.90, 698.84, -2558.50) end
-            if _G.Z2 and getRoot() then getRoot().CFrame = CFrame.new(-168.27, 823.60, 26801.41) end
+            -- Logika eksekusi terbang tanpa merubah koordinat asli
+            if _G.Z1 and getRoot() then 
+                FlyToTarget(CFrame.new(5129.90, 698.84, -2558.50)) 
+            end
+            if _G.Z2 and getRoot() then 
+                FlyToTarget(CFrame.new(-168.27, 823.60, 26801.41)) 
+            end
+            
             if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
             if _G.WS and getHumanoid() then getHumanoid().WalkSpeed = 100 end
             if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
