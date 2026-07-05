@@ -49,22 +49,17 @@ MainMenu.Size = UDim2.new(0, 550, 0, 350); MainMenu.Position = defaultPos; MainM
 ToggleBtn.MouseButton1Click:Connect(function() MainMenu.Visible = not MainMenu.Visible; if MainMenu.Visible then MainMenu.Position = defaultPos end end)
 LockBtn.MouseButton1Click:Connect(function() MainMenu.Draggable = not MainMenu.Draggable; LockBtn.Text = MainMenu.Draggable and "Lock" or "Unlock" end)
 
--- Header & Sidebar
+-- UI Setup
 local Header = Instance.new("Frame", MainMenu); Header.Size = UDim2.new(1, 0, 0, 40); Header.BackgroundColor3 = Color3.fromRGB(25, 25, 25); Instance.new("UICorner", Header).CornerRadius = UDim.new(0, 6)
 local Title = Instance.new("TextLabel", Header); Title.Text = "  SemWok Hub"; Title.TextColor3 = Color3.new(1, 1, 1); Title.Font = Enum.Font.GothamBold; Title.TextSize = 16; Title.TextXAlignment = Enum.TextXAlignment.Left; Title.Size = UDim2.new(0.4, 0, 1, 0); Title.BackgroundTransparency = 1
-local SearchBox = Instance.new("TextBox", Header); SearchBox.Size = UDim2.new(0.4, 0, 0.6, 0); SearchBox.Position = UDim2.new(0.55, 0, 0.2, 0); SearchBox.PlaceholderText = "Search"; SearchBox.Text = ""; SearchBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15); SearchBox.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", SearchBox).CornerRadius = UDim.new(0, 4)
-
 local Sidebar = Instance.new("Frame", MainMenu); Sidebar.Size = UDim2.new(0, 150, 1, -40); Sidebar.Position = UDim2.new(0, 0, 0, 40); Sidebar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 
--- Sidebar Buttons
 local MainFeaturesBtn = Instance.new("TextButton", Sidebar); MainFeaturesBtn.Size = UDim2.new(1, 0, 0, 40); MainFeaturesBtn.Position = UDim2.new(0, 0, 0, 45); MainFeaturesBtn.Text = "Main Features"; MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MainFeaturesBtn.TextColor3 = Color3.new(1, 1, 1); MainFeaturesBtn.Font = Enum.Font.GothamBold; MainFeaturesBtn.TextSize = 14
 local PlayerFeaturesBtn = Instance.new("TextButton", Sidebar); PlayerFeaturesBtn.Size = UDim2.new(1, 0, 0, 40); PlayerFeaturesBtn.Position = UDim2.new(0, 0, 0, 90); PlayerFeaturesBtn.Text = "Player"; PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.TextColor3 = Color3.new(1, 1, 1); PlayerFeaturesBtn.Font = Enum.Font.GothamBold; PlayerFeaturesBtn.TextSize = 14
 
--- Containers
 local MainContainer = Instance.new("Frame", MainMenu); MainContainer.Size = UDim2.new(1, -150, 1, -80); MainContainer.Position = UDim2.new(0, 150, 0, 40); MainContainer.BackgroundTransparency = 1
 local PlayerContainer = Instance.new("Frame", MainMenu); PlayerContainer.Size = UDim2.new(1, -150, 1, -80); PlayerContainer.Position = UDim2.new(0, 150, 0, 40); PlayerContainer.BackgroundTransparency = 1; PlayerContainer.Visible = false
 
--- Fungsi UI
 local function CreateBtn(parentFrame, name, varName)
     local btn = Instance.new("TextButton", parentFrame)
     btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40);
@@ -85,22 +80,24 @@ CreateBtn(PlayerContainer, "Anti AFK", "AFK")
 TweenService:Create(ProgressBar, TweenInfo.new(5), {Size = UDim2.new(1, 0, 1, 0)}):Play()
 task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); MainMenu.Visible = true end end)
 
--- Main Logic Loop (FLY SYSTEM ONLY)
+-- Main Logic Loop (FLY SYSTEM ONLY - SPEED 10)
 task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
     
     local function FlyToTarget(targetPos)
         local root = getRoot()
         if root then
-            -- Target + 20 Tinggi
+            -- Ketinggian + 20
             local finalPos = targetPos + Vector3.new(0, 20, 0)
             
             local bv = Instance.new("BodyVelocity")
             bv.Name = "FlightVelocity"
             bv.MaxForce = Vector3.new(1, 1, 1) * 1e6
-            bv.Velocity = (finalPos - root.Position).Unit * 350
+            -- Arah ke target dengan kecepatan 10
+            local direction = (finalPos - root.Position).Unit
+            bv.Velocity = direction * 10 
             bv.Parent = root
-            task.wait(0.2)
+            task.wait(0.5)
             bv:Destroy()
         end
     end
