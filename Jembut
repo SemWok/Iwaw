@@ -188,28 +188,31 @@ task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
     local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
     
-    local BV, BG
+    local BP, BG
+    local Z1_Pos = Vector3.new(5129.90, 698.84, -2558.50)
+    local Z2_Pos = Vector3.new(-168.27, 823.60, 26801.41)
     
     while task.wait(0.1) do
         if LocalPlayer.Character and getRoot() then
-            -- Koordinat Asli tetap ada di sini (tidak dihapus)
-            local Z1_Pos = CFrame.new(5129.90, 698.84, -2558.50)
-            local Z2_Pos = CFrame.new(-168.27, 823.60, 26801.41)
+            -- Logika gerak ke koordinat target tanpa teleport (CFrame)
+            local targetPos = (_G.Z1 and Z1_Pos) or (_G.Z2 and Z2_Pos)
             
-            -- Fly Speed Logic (Ditambahkan)
-            if _G.Z1 or _G.Z2 then
-                if not BV then
-                    BV = Instance.new("BodyVelocity", getRoot()); BV.MaxForce = Vector3.new(1/0, 1/0, 1/0); BV.Velocity = Vector3.new(0, 0, 0)
-                    BG = Instance.new("BodyGyro", getRoot()); BG.MaxTorque = Vector3.new(1/0, 1/0, 1/0); BG.CFrame = getRoot().CFrame
+            if targetPos then
+                if not BP then
+                    BP = Instance.new("BodyPosition", getRoot())
+                    BP.MaxForce = Vector3.new(1/0, 1/0, 1/0)
+                    BP.P = 10000 
+                    
+                    BG = Instance.new("BodyGyro", getRoot())
+                    BG.MaxTorque = Vector3.new(1/0, 1/0, 1/0)
                 end
-                BV.Velocity = workspace.CurrentCamera.CFrame.LookVector * 1000
-                BG.CFrame = workspace.CurrentCamera.CFrame
+                BP.Position = targetPos
             else
-                if BV then BV:Destroy(); BV = nil end
+                if BP then BP:Destroy(); BP = nil end
                 if BG then BG:Destroy(); BG = nil end
             end
             
-            -- Fitur Lainnya
+            -- Fitur Lainnya (Tetap utuh)
             if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
             if _G.WS and getHumanoid() then getHumanoid().WalkSpeed = 100 end
             if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
