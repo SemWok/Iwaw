@@ -197,8 +197,8 @@ task.spawn(function()
             bv.Name = "FlyVel"
             bv.MaxForce = Vector3.new(1, 1, 1) * 1e6
             
-            -- Manuver Naik 150
-            bv.Velocity = ((targetPos + Vector3.new(0, 150, 0)) - root.Position).Unit * speed
+            -- Manuver Naik 250
+            bv.Velocity = ((targetPos + Vector3.new(0, 250, 0)) - root.Position).Unit * speed
             task.wait(0.3)
             
             -- Menuju Target
