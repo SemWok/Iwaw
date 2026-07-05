@@ -4,7 +4,7 @@
 
 -- 0. GAME CHECK
 local Games = {
-    [109578395590751] = "https://pastebin.com/raw/HnMhUe5X"
+    [109578395590751] = "https://raw.githubusercontent.com/SemWok/Iwaw/refs/heads/main/Jembut"
 }
 
 local ScriptURL = Games[game.PlaceId]
