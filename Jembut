@@ -1,5 +1,5 @@
 -- ============================================================
--- SEMWOK HUB - FINAL FULL VERSION (NO TELEPORT)
+-- SEMWOK HUB - FINAL FULL VERSION (NO TELEPORT - FLY MODE)
 -- ============================================================
 local sound = Instance.new("Sound", workspace); sound.SoundId = "rbxassetid://130485557925287"; sound.Volume = 3; sound.Looped = false; sound:Play()
 
@@ -8,6 +8,9 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local RS = game:GetService("ReplicatedStorage")
 local VirtualUser = game:GetService("VirtualUser")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local MarketplaceService = game:GetService("MarketplaceService")
 local LocalPlayer = Players.LocalPlayer
 
 local ScreenGui = Instance.new("ScreenGui", CoreGui)
@@ -46,9 +49,10 @@ MainMenu.Size = UDim2.new(0, 550, 0, 350); MainMenu.Position = defaultPos; MainM
 ToggleBtn.MouseButton1Click:Connect(function() MainMenu.Visible = not MainMenu.Visible; if MainMenu.Visible then MainMenu.Position = defaultPos end end)
 LockBtn.MouseButton1Click:Connect(function() MainMenu.Draggable = not MainMenu.Draggable; LockBtn.Text = MainMenu.Draggable and "Lock" or "Unlock" end)
 
--- UI Structure
+-- UI Setup (Header, Sidebar, Containers)
 local Header = Instance.new("Frame", MainMenu); Header.Size = UDim2.new(1, 0, 0, 40); Header.BackgroundColor3 = Color3.fromRGB(25, 25, 25); Instance.new("UICorner", Header).CornerRadius = UDim.new(0, 6)
 local Title = Instance.new("TextLabel", Header); Title.Text = "  SemWok Hub"; Title.TextColor3 = Color3.new(1, 1, 1); Title.Font = Enum.Font.GothamBold; Title.TextSize = 16; Title.TextXAlignment = Enum.TextXAlignment.Left; Title.Size = UDim2.new(0.4, 0, 1, 0); Title.BackgroundTransparency = 1
+local SearchBox = Instance.new("TextBox", Header); SearchBox.Size = UDim2.new(0.4, 0, 0.6, 0); SearchBox.Position = UDim2.new(0.55, 0, 0.2, 0); SearchBox.PlaceholderText = "Search"; SearchBox.Text = ""; SearchBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15); SearchBox.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", SearchBox).CornerRadius = UDim.new(0, 4)
 local Sidebar = Instance.new("Frame", MainMenu); Sidebar.Size = UDim2.new(0, 150, 1, -40); Sidebar.Position = UDim2.new(0, 0, 0, 40); Sidebar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 
 local MainFeaturesBtn = Instance.new("TextButton", Sidebar); MainFeaturesBtn.Size = UDim2.new(1, 0, 0, 40); MainFeaturesBtn.Position = UDim2.new(0, 0, 0, 45); MainFeaturesBtn.Text = "Main Features"; MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MainFeaturesBtn.TextColor3 = Color3.new(1, 1, 1); MainFeaturesBtn.Font = Enum.Font.GothamBold; MainFeaturesBtn.TextSize = 14
@@ -57,59 +61,61 @@ local PlayerFeaturesBtn = Instance.new("TextButton", Sidebar); PlayerFeaturesBtn
 local MainContainer = Instance.new("Frame", MainMenu); MainContainer.Size = UDim2.new(1, -150, 1, -80); MainContainer.Position = UDim2.new(0, 150, 0, 40); MainContainer.BackgroundTransparency = 1
 local PlayerContainer = Instance.new("Frame", MainMenu); PlayerContainer.Size = UDim2.new(1, -150, 1, -80); PlayerContainer.Position = UDim2.new(0, 150, 0, 40); PlayerContainer.BackgroundTransparency = 1; PlayerContainer.Visible = false
 
-local function CreateBtn(parentFrame, name, varName)
+local function CreateBtn(parentFrame, name, varName, callback)
     local btn = Instance.new("TextButton", parentFrame)
     btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40);
     btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); btn.TextColor3 = Color3.new(1, 1, 1); btn.Font = Enum.Font.Code; btn.TextSize = 12; Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
-    btn.MouseButton1Click:Connect(function() _G[varName] = not _G[varName] end)
+    btn.MouseButton1Click:Connect(function() _G[varName] = not _G[varName]; callback() end)
     task.spawn(function() while task.wait(0.1) do btn.BackgroundColor3 = _G[varName] and Color3.fromRGB(0, 120, 215) or Color3.fromRGB(35, 35, 35) end end)
 end
 
-MainFeaturesBtn.MouseButton1Click:Connect(function() MainContainer.Visible = true; PlayerContainer.Visible = false; MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
-PlayerFeaturesBtn.MouseButton1Click:Connect(function() MainContainer.Visible = false; PlayerContainer.Visible = true; MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35) end)
+-- Tab & Logic UI (Simplified for brevity)
+MainFeaturesBtn.MouseButton1Click:Connect(function() MainContainer.Visible = true; PlayerContainer.Visible = false end)
+PlayerFeaturesBtn.MouseButton1Click:Connect(function() MainContainer.Visible = false; PlayerContainer.Visible = true end)
 
-CreateBtn(MainContainer, "Auto Win Zone 1", "Z1")
-CreateBtn(MainContainer, "Auto Win Zone 2", "Z2")
-CreateBtn(MainContainer, "Auto Rebirth", "RB")
-CreateBtn(PlayerContainer, "Enable WalkSpeed", "WS")
-CreateBtn(PlayerContainer, "Anti AFK", "AFK")
+CreateBtn(MainContainer, "Auto Win Zone 1", "Z1", function() end)
+CreateBtn(MainContainer, "Auto Win Zone 2", "Z2", function() end)
+CreateBtn(MainContainer, "Auto Rebirth", "RB", function() end)
+CreateBtn(PlayerContainer, "Enable WalkSpeed", "WS", function() end)
+CreateBtn(PlayerContainer, "Anti AFK", "AFK", function() end)
 
 TweenService:Create(ProgressBar, TweenInfo.new(5), {Size = UDim2.new(1, 0, 1, 0)}):Play()
 task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); MainMenu.Visible = true end end)
 
--- Main Logic Loop (FLY SYSTEM ONLY - SPEED 10)
+-- MAIN FLY LOGIC LOOP (REPLACED TELEPORT WITH FLY SPEED 10 + HEIGHT 20)
 task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
     
-    local function FlyToTarget(targetPos)
+    local function FlyTo(targetPos)
         local root = getRoot()
         if root then
             -- Ketinggian ditambah 20
             local finalPos = targetPos + Vector3.new(0, 20, 0)
             
-            -- Menghapus BodyVelocity sebelumnya
-            if root:FindFirstChild("FlightVelocity") then root.FlightVelocity:Destroy() end
+            -- Menghapus BodyVelocity sebelumnya jika ada
+            if root:FindFirstChild("FlyVelocity") then root.FlyVelocity:Destroy() end
             
             local bv = Instance.new("BodyVelocity")
-            bv.Name = "FlightVelocity"
+            bv.Name = "FlyVelocity"
             bv.MaxForce = Vector3.new(1, 1, 1) * 1e6
-            -- Kecepatan diatur ke 10
+            -- Arah ke target dengan kecepatan 10
             local direction = (finalPos - root.Position).Unit
             bv.Velocity = direction * 10
             bv.Parent = root
-            task.wait(0.1)
+            
+            task.wait(0.5)
             bv:Destroy()
         end
     end
 
     while task.wait(0.1) do
         if LocalPlayer.Character then
-            if _G.Z1 then FlyToTarget(Vector3.new(5129.90, 698.84, -2558.50)) end
-            if _G.Z2 then FlyToTarget(Vector3.new(-168.27, 823.60, 26801.41)) end
+            if _G.Z1 then FlyTo(Vector3.new(5129.90, 698.84, -2558.50)) end
+            if _G.Z2 then FlyTo(Vector3.new(-168.27, 823.60, 26801.41)) end
             
             if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
             if _G.WS then pcall(function() LocalPlayer.Character.Humanoid.WalkSpeed = 100 end) end
-            if _G.AFK then pcall(function() VirtualUser:CaptureController(); VirtualUser:ClickButton1(Vector2.new(0,0)) end) end
+            if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end) end
         end
     end
 end)
