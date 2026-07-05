@@ -206,4 +206,7 @@ task.spawn(function()
             if _G.Z2 and getRoot() then FlyTo(Vector3.new(-168.27, 823.60, 26801.41)) end
             if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
             if _G.WS and getHumanoid() then getHumanoid().WalkSpeed = 100 end
-            if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(
+            if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
+        end
+    end
+end)
