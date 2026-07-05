@@ -53,22 +53,8 @@ LockBtn.MouseButton1Click:Connect(function() MainMenu.Draggable = not MainMenu.D
 local Header = Instance.new("Frame", MainMenu); Header.Size = UDim2.new(1, 0, 0, 40); Header.BackgroundColor3 = Color3.fromRGB(25, 25, 25); Instance.new("UICorner", Header).CornerRadius = UDim.new(0, 6)
 local Title = Instance.new("TextLabel", Header); Title.Text = "  SemWok Hub"; Title.TextColor3 = Color3.new(1, 1, 1); Title.Font = Enum.Font.GothamBold; Title.TextSize = 16; Title.TextXAlignment = Enum.TextXAlignment.Left; Title.Size = UDim2.new(0.4, 0, 1, 0); Title.BackgroundTransparency = 1
 local SearchBox = Instance.new("TextBox", Header); SearchBox.Size = UDim2.new(0.4, 0, 0.6, 0); SearchBox.Position = UDim2.new(0.55, 0, 0.2, 0); SearchBox.PlaceholderText = "Search"; SearchBox.Text = ""; SearchBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15); SearchBox.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", SearchBox).CornerRadius = UDim.new(0, 4)
-local SearchIcon = Instance.new("ImageLabel", SearchBox); SearchIcon.Size = UDim2.new(0, 20, 0, 20); SearchIcon.Position = UDim2.new(0, 5, 0.1, 0); SearchIcon.BackgroundTransparency = 1; SearchIcon.Image = "rbxassetid://3926305904"; SearchIcon.ImageRectOffset = Vector2.new(964, 324); SearchIcon.ImageRectSize = Vector2.new(36, 36)
 
 local Sidebar = Instance.new("Frame", MainMenu); Sidebar.Size = UDim2.new(0, 150, 1, -40); Sidebar.Position = UDim2.new(0, 0, 0, 40); Sidebar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-
--- GARIS HITAM
-local RedLineVert = Instance.new("Frame", MainMenu)
-RedLineVert.Size = UDim2.new(0, 2, 1, -40)
-RedLineVert.Position = UDim2.new(0, 147, 0, 40)
-RedLineVert.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-RedLineVert.BorderSizePixel = 0; RedLineVert.ZIndex = 5
-
-local RedLineHoriz = Instance.new("Frame", MainMenu)
-RedLineHoriz.Size = UDim2.new(1, 0, 0, 2)
-RedLineHoriz.Position = UDim2.new(0, 0, 0, 310)
-RedLineHoriz.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-RedLineHoriz.BorderSizePixel = 0; RedLineHoriz.ZIndex = 5
 
 -- Sidebar Buttons
 local ChangelogBtn = Instance.new("TextButton", Sidebar); ChangelogBtn.Size = UDim2.new(1, 0, 0, 40); ChangelogBtn.Text = "Changelog"; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); ChangelogBtn.TextColor3 = Color3.new(1, 1, 1); ChangelogBtn.Font = Enum.Font.GothamBold; ChangelogBtn.TextSize = 14
@@ -80,148 +66,60 @@ local UserFrame = Instance.new("Frame", Sidebar); UserFrame.Size = UDim2.new(1, 
 local UserImage = Instance.new("ImageLabel", UserFrame); UserImage.Size = UDim2.new(0, 30, 0, 30); UserImage.Position = UDim2.new(0, 10, 0, 5); UserImage.Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420); Instance.new("UICorner", UserImage).CornerRadius = UDim.new(1, 0)
 local UserName = Instance.new("TextLabel", UserFrame); UserName.Text = LocalPlayer.Name; UserName.Position = UDim2.new(0, 45, 0, 5); UserName.Size = UDim2.new(0, 100, 0, 30); UserName.TextColor3 = Color3.new(1, 1, 1); UserName.Font = Enum.Font.GothamBold; UserName.TextSize = 12; UserName.TextXAlignment = Enum.TextXAlignment.Left; UserName.BackgroundTransparency = 1
 
--- Tombol Sosial
-local SocialContainer = Instance.new("Frame", MainMenu); SocialContainer.Size = UDim2.new(0, 390, 0, 30); SocialContainer.Position = UDim2.new(0, 155, 1, -35); SocialContainer.BackgroundTransparency = 1
-local YTBtn = Instance.new("TextButton", SocialContainer); YTBtn.Size = UDim2.new(0, 190, 1, 0); YTBtn.Text = "YouTube: SemWok"; YTBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0); YTBtn.TextColor3 = Color3.new(1, 1, 1); YTBtn.Font = Enum.Font.GothamBold; YTBtn.TextSize = 10; Instance.new("UICorner", YTBtn).CornerRadius = UDim.new(0, 4)
-YTBtn.MouseButton1Click:Connect(function() setclipboard("https://youtube.com/@SemWok") end)
-local DCBtn = Instance.new("TextButton", SocialContainer); DCBtn.Size = UDim2.new(0, 190, 1, 0); DCBtn.Position = UDim2.new(0, 200, 0, 0); DCBtn.Text = "Discord"; DCBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242); DCBtn.TextColor3 = Color3.new(1, 1, 1); DCBtn.Font = Enum.Font.GothamBold; DCBtn.TextSize = 10; Instance.new("UICorner", DCBtn).CornerRadius = UDim.new(0, 4)
-DCBtn.MouseButton1Click:Connect(function() setclipboard("https://discord.gg/semwok") end)
-
--- Info Popup
-local InfoPopup = Instance.new("Frame", MainMenu); InfoPopup.Size = UDim2.new(0, 250, 0, 150); InfoPopup.Position = UDim2.new(0.5, -125, 0.5, -75); InfoPopup.BackgroundColor3 = Color3.fromRGB(30, 30, 30); InfoPopup.Visible = false; InfoPopup.ZIndex = 50; Instance.new("UICorner", InfoPopup).CornerRadius = UDim.new(0, 8)
-local InfoText = Instance.new("TextLabel", InfoPopup); InfoText.Size = UDim2.new(1, -20, 1, -20); InfoText.Position = UDim2.new(0, 10, 0, 10); InfoText.TextColor3 = Color3.new(1, 1, 1); InfoText.BackgroundTransparency = 1; InfoText.TextXAlignment = Enum.TextXAlignment.Left; InfoText.Font = Enum.Font.Code; InfoText.TextSize = 12; InfoText.Text = ""; InfoText.ZIndex = 51
-local InfoBtn = Instance.new("TextButton", UserFrame); InfoBtn.Size = UDim2.new(1, 0, 1, 0); InfoBtn.BackgroundTransparency = 1; InfoBtn.Text = ""; InfoBtn.MouseButton1Click:Connect(function() InfoPopup.Visible = not InfoPopup.Visible end)
-
--- Logic Loops
-task.spawn(function()
-    while task.wait(1) do
-        if InfoPopup.Visible then
-            local gameName = MarketplaceService:GetProductInfo(game.PlaceId).Name
-            local serverType = (game.PrivateServerId ~= "" and game.PrivateServerOwnerId ~= 0) and "Private" or "Public"
-            InfoText.Text = "Executor: Mobile (Redfinger)\nDevice: Mobile\nGame: "..gameName.."\nServer: "..serverType.."\nPlayers: "..#Players:GetPlayers().."/"..Players.MaxPlayers.."\nTime: "..math.floor(workspace.DistributedGameTime/60).." min\nUser: "..LocalPlayer.Name
-        end
-    end
-end)
-
 -- Containers
-local ChangelogContainer = Instance.new("Frame", MainMenu); ChangelogContainer.Size = UDim2.new(1, -150, 1, -80); ChangelogContainer.Position = UDim2.new(0, 150, 0, 40); ChangelogContainer.BackgroundTransparency = 1; ChangelogContainer.Visible = false
 local MainContainer = Instance.new("Frame", MainMenu); MainContainer.Size = UDim2.new(1, -150, 1, -80); MainContainer.Position = UDim2.new(0, 150, 0, 40); MainContainer.BackgroundTransparency = 1
 local PlayerContainer = Instance.new("Frame", MainMenu); PlayerContainer.Size = UDim2.new(1, -150, 1, -80); PlayerContainer.Position = UDim2.new(0, 150, 0, 40); PlayerContainer.BackgroundTransparency = 1; PlayerContainer.Visible = false
 
--- Data Changelog
-local SupportGames = {"MBG DRIVER", "INSIDE BRAINROT HEAD", "LORI'S NIGHTMARE", "BECOME A BRAINROT", "+1 SPEED BRICK ESCAPE", "LOGO FOR SOCCER CARDS", "MERGER A NUKE", "+1 SPEED TITAN ESCAPE", "BE A YOUTUBER", "PHONK CLICKER", "FIND THE BRAINROT MORPHS"}
-local UnsupportGames = {"Yang main asal curi Script", "Testing 1", "Testing 2"}
-local SupportText = Instance.new("TextLabel", ChangelogContainer); SupportText.Size = UDim2.new(0.5, 0, 0, 300); SupportText.Position = UDim2.new(0, 0, 0, 10); SupportText.BackgroundTransparency = 1; SupportText.TextColor3 = Color3.new(1, 1, 1); SupportText.TextXAlignment = Enum.TextXAlignment.Left; SupportText.TextYAlignment = Enum.TextYAlignment.Top; SupportText.Font = Enum.Font.GothamBold; SupportText.TextSize = 12
-local UnsupportText = Instance.new("TextLabel", ChangelogContainer); UnsupportText.Size = UDim2.new(0.5, 0, 0, 300); UnsupportText.Position = UDim2.new(0.5, 0, 0, 10); UnsupportText.BackgroundTransparency = 1; UnsupportText.TextColor3 = Color3.new(1, 1, 1); UnsupportText.TextXAlignment = Enum.TextXAlignment.Left; UnsupportText.TextYAlignment = Enum.TextYAlignment.Top; UnsupportText.Font = Enum.Font.GothamBold; UnsupportText.TextSize = 12
-
-local function RefreshLogs()
-    local filter = string.lower(SearchBox.Text)
-    local sOut = "Support Game:\n"
-    for _, v in pairs(SupportGames) do if filter == "" or string.find(string.lower(v), filter) then sOut = sOut .. "✓ " .. v .. "\n" end end
-    SupportText.Text = sOut
-    local uOut = "Unsupport Game:\n"
-    for _, v in pairs(UnsupportGames) do if filter == "" or string.find(string.lower(v), filter) then uOut = uOut .. "X " .. v .. "\n" end end
-    UnsupportText.Text = uOut
-end
-RefreshLogs()
-
--- Fungsi Layout 2 Kolom
-local function CreateBtn(parentFrame, name, varName, callback)
+-- Fungsi Layout
+local function CreateBtn(parentFrame, name, varName)
     local btn = Instance.new("TextButton", parentFrame)
     btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40);
     btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); btn.TextColor3 = Color3.new(1, 1, 1); btn.Font = Enum.Font.Code; btn.TextSize = 12; Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
-    btn.MouseButton1Click:Connect(function() _G[varName] = not _G[varName]; callback() end)
+    btn.MouseButton1Click:Connect(function() _G[varName] = not _G[varName] end)
     task.spawn(function() while task.wait(0.1) do btn.BackgroundColor3 = _G[varName] and Color3.fromRGB(0, 120, 215) or Color3.fromRGB(35, 35, 35) end end)
 end
 
-local function UpdateLayout(container)
-    local input = string.lower(SearchBox.Text)
-    local xPos = {0.03, 0.52}
-    local yPos = 10
-    local col = 1
-    local visibleButtons = {}
-    for _, obj in pairs(container:GetChildren()) do
-        if obj:IsA("TextButton") then
-            if input == "" or string.find(string.lower(obj.Name), input) then obj.Visible = true; table.insert(visibleButtons, obj) else obj.Visible = false end
-        end
-    end
-    for i, btn in pairs(visibleButtons) do
-        btn.Position = UDim2.new(xPos[col], 0, 0, yPos)
-        if col == 2 then yPos = yPos + 45; col = 1 else col = 2 end
-    end
-end
-
 -- Tab Logic
-ChangelogBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = true; MainContainer.Visible = false; PlayerContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
-MainFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = true; PlayerContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
-PlayerFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = false; PlayerContainer.Visible = true; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35) end)
+MainFeaturesBtn.MouseButton1Click:Connect(function() MainContainer.Visible = true; PlayerContainer.Visible = false; MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
+PlayerFeaturesBtn.MouseButton1Click:Connect(function() MainContainer.Visible = false; PlayerContainer.Visible = true; MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35) end)
 
 -- Add Buttons
-CreateBtn(MainContainer, "Auto Win Zone 1", "Z1", function() end)
-CreateBtn(MainContainer, "Auto Win Zone 2", "Z2", function() end)
-CreateBtn(MainContainer, "Auto Rebirth", "RB", function() end)
-CreateBtn(PlayerContainer, "Enable WalkSpeed", "WS", function() end)
-CreateBtn(PlayerContainer, "Anti AFK", "AFK", function() end)
-CreateBtn(PlayerContainer, "Find Empty Server", "ES", function() 
-    local url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
-    local success, result = pcall(function() return game:HttpGet(url) end)
-    if success then
-        local data = HttpService:JSONDecode(result)
-        for _, server in pairs(data.data) do
-            if server.playing < server.maxPlayers and server.id ~= game.JobId then
-                TeleportService:TeleportToPlaceInstance(game.PlaceId, server.id, LocalPlayer)
-                break
-            end
-        end
-    end
-end)
-CreateBtn(PlayerContainer, "Rejoin", "REJOIN", function() TeleportService:Teleport(game.PlaceId, LocalPlayer) end)
-
-SearchBox:GetPropertyChangedSignal("Text"):Connect(function() UpdateLayout(MainContainer); UpdateLayout(PlayerContainer); RefreshLogs() end)
-UpdateLayout(MainContainer); UpdateLayout(PlayerContainer)
+CreateBtn(MainContainer, "Auto Win Zone 1", "Z1")
+CreateBtn(MainContainer, "Auto Win Zone 2", "Z2")
+CreateBtn(MainContainer, "Auto Rebirth", "RB")
+CreateBtn(PlayerContainer, "Enable WalkSpeed", "WS")
+CreateBtn(PlayerContainer, "Anti AFK", "AFK")
 
 TweenService:Create(ProgressBar, TweenInfo.new(5), {Size = UDim2.new(1, 0, 1, 0)}):Play()
 task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); MainMenu.Visible = true end end)
 
--- Main Logic Loop
+-- Main Logic Loop (HANYA FLY, TIDAK ADA TELEPORT)
 task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
-    local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
     
-    -- Fungsi bawaan untuk membuat efek terbang cepat (Fly / Tween) mulus ke posisi target
-    local function FlyToTarget(targetCFrame)
+    local function FlyFast(targetPos)
         local root = getRoot()
         if root then
-            local currentTween = root:FindFirstChild("FlyTween")
-            if currentTween then currentTween:Destroy() end
-            
-            local speed = 250 -- Mengatur kecepatan terbang karakter kamu
-            local distance = (root.Position - targetCFrame.Position).Magnitude
-            local duration = distance / speed
-            
-            local info = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-            local tween = TweenService:Create(root, info, {CFrame = targetCFrame})
-            tween.Name = "FlyTween"
-            tween:Play()
-            
-            -- Menahan perulangan utama sampai proses terbang selesai dilakukan
-            tween.Completed:Wait()
+            -- Mencegah animasi bertabrakan
+            local speed = 300 -- Kecepatan terbang
+            local bodyVelocity = Instance.new("BodyVelocity")
+            bodyVelocity.Velocity = (targetPos - root.Position).Unit * speed
+            bodyVelocity.MaxForce = Vector3.new(1, 1, 1) * 1e6
+            bodyVelocity.Parent = root
+            task.wait(0.5) -- Durasi terbang
+            bodyVelocity:Destroy()
         end
     end
 
     while task.wait(0.1) do
         if LocalPlayer.Character then
-            -- Logika eksekusi terbang tanpa merubah koordinat asli
-            if _G.Z1 and getRoot() then 
-                FlyToTarget(CFrame.new(5129.90, 698.84, -2558.50)) 
-            end
-            if _G.Z2 and getRoot() then 
-                FlyToTarget(CFrame.new(-168.27, 823.60, 26801.41)) 
-            end
+            -- Logika TERBANG (FLY) saja
+            if _G.Z1 then FlyFast(Vector3.new(5129.90, 698.84, -2558.50)) end
+            if _G.Z2 then FlyFast(Vector3.new(-168.27, 823.60, 26801.41)) end
             
             if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
-            if _G.WS and getHumanoid() then getHumanoid().WalkSpeed = 100 end
-            if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
+            if _G.WS then LocalPlayer.Character.Humanoid.WalkSpeed = 100 end
+            if _G.AFK then pcall(function() VirtualUser:CaptureController(); VirtualUser:ClickButton1(Vector2.new(0,0)) end) end
         end
     end
 end)
