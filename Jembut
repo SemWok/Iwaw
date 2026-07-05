@@ -1,5 +1,5 @@
 -- ============================================================
--- SEMWOK HUB - FULL VERSION WITH AUTO BUY
+-- SEMWOK HUB - FINAL FULL INTEGRATED VERSION
 -- ============================================================
 local sound = Instance.new("Sound", workspace); sound.SoundId = "rbxassetid://130485557925287"; sound.Volume = 3; sound.Looped = false; sound:Play()
 
@@ -33,7 +33,7 @@ BarContainer.Size = UDim2.new(0, 300, 0, 6); BarContainer.Position = UDim2.new(0
 local ProgressBar = Instance.new("Frame", BarContainer)
 ProgressBar.Size = UDim2.new(0, 0, 1, 0); ProgressBar.BackgroundColor3 = Color3.fromRGB(138, 43, 226); ProgressBar.ZIndex = 12
 
--- 2. MAIN UI SETUP
+-- 2. TOGGLE & LOCK
 local ButtonsContainer = Instance.new("Frame", ScreenGui)
 ButtonsContainer.Size = UDim2.new(0, 80, 0, 100); ButtonsContainer.Position = UDim2.new(0, 20, 0.5, -200); ButtonsContainer.BackgroundTransparency = 1
 local ToggleBtn = Instance.new("TextButton", ButtonsContainer)
@@ -41,30 +41,33 @@ ToggleBtn.Size = UDim2.new(1, 0, 0, 40); ToggleBtn.Text = "Toggle"; ToggleBtn.Ba
 local LockBtn = Instance.new("TextButton", ButtonsContainer)
 LockBtn.Size = UDim2.new(1, 0, 0, 40); LockBtn.Position = UDim2.new(0, 0, 0, 50); LockBtn.Text = "Lock"; LockBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30); LockBtn.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", LockBtn).CornerRadius = UDim.new(0, 4)
 
+-- 3. MAIN MENU
+local defaultPos = UDim2.new(0.5, -275, 0.5, -175)
 local MainMenu = Instance.new("Frame", ScreenGui)
-MainMenu.Size = UDim2.new(0, 550, 0, 350); MainMenu.Position = UDim2.new(0.5, -275, 0.5, -175); MainMenu.BackgroundColor3 = Color3.fromRGB(20, 20, 20); MainMenu.Visible = false; MainMenu.Active = true; MainMenu.Draggable = true; Instance.new("UICorner", MainMenu).CornerRadius = UDim.new(0, 6)
+MainMenu.Size = UDim2.new(0, 550, 0, 350); MainMenu.Position = defaultPos; MainMenu.BackgroundColor3 = Color3.fromRGB(20, 20, 20); MainMenu.Visible = false; MainMenu.Active = true; MainMenu.Draggable = true; Instance.new("UICorner", MainMenu).CornerRadius = UDim.new(0, 6)
 
-ToggleBtn.MouseButton1Click:Connect(function() MainMenu.Visible = not MainMenu.Visible end)
+ToggleBtn.MouseButton1Click:Connect(function() MainMenu.Visible = not MainMenu.Visible; if MainMenu.Visible then MainMenu.Position = defaultPos end end)
 LockBtn.MouseButton1Click:Connect(function() MainMenu.Draggable = not MainMenu.Draggable; LockBtn.Text = MainMenu.Draggable and "Lock" or "Unlock" end)
 
--- Sidebar & Tabs
+-- Sidebar & Containers
 local Sidebar = Instance.new("Frame", MainMenu); Sidebar.Size = UDim2.new(0, 150, 1, -40); Sidebar.Position = UDim2.new(0, 0, 0, 40); Sidebar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 local MainContainer = Instance.new("Frame", MainMenu); MainContainer.Size = UDim2.new(1, -150, 1, -80); MainContainer.Position = UDim2.new(0, 150, 0, 40); MainContainer.BackgroundTransparency = 1
 local PlayerContainer = Instance.new("Frame", MainMenu); PlayerContainer.Size = UDim2.new(1, -150, 1, -80); PlayerContainer.Position = UDim2.new(0, 150, 0, 40); PlayerContainer.BackgroundTransparency = 1; PlayerContainer.Visible = false
 
--- FUNGSI TOMBOL
+-- Fungsi Tombol
 local function CreateBtn(parentFrame, name, varName, callback)
     local btn = Instance.new("TextButton", parentFrame)
-    btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40); btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); btn.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+    btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40);
+    btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); btn.TextColor3 = Color3.new(1, 1, 1); btn.Font = Enum.Font.Code; btn.TextSize = 12; Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
     btn.MouseButton1Click:Connect(function() _G[varName] = not _G[varName]; callback() end)
     task.spawn(function() while task.wait(0.1) do btn.BackgroundColor3 = _G[varName] and Color3.fromRGB(0, 120, 215) or Color3.fromRGB(35, 35, 35) end end)
 end
 
--- 3. AUTO BUY SYSTEM
-local ItemsToBuy = {"Item1", "Item2", "Item3"} -- GANTI NAMA ITEM SESUAI GAME
+-- 4. AUTO BUY SYSTEM
+local ItemsToBuy = {"Aduite Antlers", "Blue Night Crown", "Golden Fedora", "Emerald Valkyrie", "White Fedora"}
 local SelectedItem = ItemsToBuy[1]
 local Dropdown = Instance.new("TextButton", MainContainer)
-Dropdown.Size = UDim2.new(0.9, 0, 0, 40); Dropdown.Position = UDim2.new(0.05, 0, 0, 180); Dropdown.Text = "Select: "..SelectedItem; Dropdown.BackgroundColor3 = Color3.fromRGB(40,40,40); Dropdown.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", Dropdown).CornerRadius = UDim.new(0, 4)
+Dropdown.Size = UDim2.new(0.9, 0, 0, 40); Dropdown.Position = UDim2.new(0.05, 0, 0, 150); Dropdown.Text = "Select: "..SelectedItem; Dropdown.BackgroundColor3 = Color3.fromRGB(40,40,40); Dropdown.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", Dropdown).CornerRadius = UDim.new(0, 4)
 
 local index = 1
 Dropdown.MouseButton1Click:Connect(function()
@@ -73,32 +76,30 @@ Dropdown.MouseButton1Click:Connect(function()
     Dropdown.Text = "Select: "..SelectedItem
 end)
 
-CreateBtn(MainContainer, "Auto Buy", "AUTO_BUY", function() 
-    task.spawn(function() 
-        while _G.AUTO_BUY do 
-            -- --- GANTI DISINI ---
-            -- Cari nama Remote di ReplicatedStorage, ganti 'BuyRemote' dengan nama asli
-            -- RS.BuyRemote:FireServer(SelectedItem)
-            task.wait(0.5) 
-        end 
-    end)
-end)
+CreateBtn(MainContainer, "Auto Buy Item", "AUTO_BUY", function() end)
 
--- DEFAULT FEATURES
+-- Default Features
 CreateBtn(MainContainer, "Auto Win 1", "Z1", function() end)
-CreateBtn(PlayerContainer, "Speed 100", "WS", function() end)
+CreateBtn(MainContainer, "Auto Rebirth", "RB", function() end)
+CreateBtn(PlayerContainer, "Enable WalkSpeed", "WS", function() end)
+CreateBtn(PlayerContainer, "Anti AFK", "AFK", function() end)
 
--- LOADING FINISH
+-- Load Completion
 TweenService:Create(ProgressBar, TweenInfo.new(5), {Size = UDim2.new(1, 0, 1, 0)}):Play()
 task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); MainMenu.Visible = true end end)
 
--- MAIN LOGIC
+-- Main Loop
 task.spawn(function()
     while task.wait(0.1) do
-        if _G.Z1 then -- Logic tambahan
+        if _G.Z1 and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(5129.90, 698.84, -2558.50) end
+        if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
+        if _G.WS and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then LocalPlayer.Character.Humanoid.WalkSpeed = 100 end
+        if _G.AUTO_BUY then 
+            pcall(function() 
+                -- GANTI 'BuyRemote' DENGAN NAMA REMOTE ASLI DI GAME
+                RS.BuyRemote:FireServer(SelectedItem) 
+            end) 
         end
-        if _G.AUTO_BUY then
-             -- Contoh: RS.BuyRemote:FireServer(SelectedItem)
-        end
+        if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end) end
     end
 end)
