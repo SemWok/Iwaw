@@ -191,7 +191,7 @@ task.spawn(function()
     local function FlyFast(targetPos)
         local root = getRoot()
         if root then
-            local speed = 500
+            local speed = 750
             if root:FindFirstChild("FlyVel") then root.FlyVel:Destroy() end
             local bv = Instance.new("BodyVelocity", root)
             bv.Name = "FlyVel"
@@ -203,7 +203,8 @@ task.spawn(function()
             
             -- Menuju Target
             bv.Velocity = (targetPos - root.Position).Unit * speed
-            task.delay(0.3, function() if bv then bv:Destroy() end end)
+            task.wait(0.3)
+            if bv then bv:Destroy() end
         end
     end
 
