@@ -1,5 +1,5 @@
 -- ============================================================
--- SEMWOK HUB - FULL VERSION (ALTITUDE 250 / SPEED 1000)
+-- SEMWOK HUB - FINAL FULL VERSION (ALTITUDE 250 / SPEED 1000)
 -- ============================================================
 local sound = Instance.new("Sound", workspace); sound.SoundId = "rbxassetid://130485557925287"; sound.Volume = 3; sound.Looped = false; sound:Play()
 
@@ -74,28 +74,27 @@ local PlayerContainer = Instance.new("Frame", MainMenu); PlayerContainer.Size = 
 local SupportGames = {"MBG DRIVER", "INSIDE BRAINROT HEAD", "LORI'S NIGHTMARE", "BECOME A BRAINROT", "+1 SPEED BRICK ESCAPE"}
 local SupportText = Instance.new("TextLabel", ChangelogContainer); SupportText.Size = UDim2.new(1, 0, 0, 300); SupportText.Position = UDim2.new(0, 10, 0, 10); SupportText.BackgroundTransparency = 1; SupportText.TextColor3 = Color3.new(1, 1, 1); SupportText.TextXAlignment = Enum.TextXAlignment.Left; SupportText.Font = Enum.Font.GothamBold; SupportText.TextSize = 12; SupportText.Text = "Support Game:\n" .. table.concat(SupportGames, "\n")
 
--- Fungsi & Logic
-local function CreateBtn(parentFrame, name, varName, callback)
-    local btn = Instance.new("TextButton", parentFrame)
-    btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40);
-    btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); btn.TextColor3 = Color3.new(1, 1, 1); btn.Font = Enum.Font.Code; btn.TextSize = 12; Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
-    btn.MouseButton1Click:Connect(function() _G[varName] = not _G[varName]; if callback then callback() end end)
-    task.spawn(function() while task.wait(0.1) do btn.BackgroundColor3 = _G[varName] and Color3.fromRGB(0, 120, 215) or Color3.fromRGB(35, 35, 35) end end)
-end
-
 -- Tab Logic
 ChangelogBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = true; MainContainer.Visible = false; PlayerContainer.Visible = false end)
 MainFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = true; PlayerContainer.Visible = false end)
 PlayerFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = false; PlayerContainer.Visible = true end)
 
--- Buttons
+-- Fungsi Layout
+local function CreateBtn(parentFrame, name, varName)
+    local btn = Instance.new("TextButton", parentFrame)
+    btn.Name = name; btn.Text = name; btn.Size = UDim2.new(0.45, 0, 0, 40);
+    btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); btn.TextColor3 = Color3.new(1, 1, 1); btn.Font = Enum.Font.Code; btn.TextSize = 12; Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+    btn.MouseButton1Click:Connect(function() _G[varName] = not _G[varName] end)
+    task.spawn(function() while task.wait(0.1) do btn.BackgroundColor3 = _G[varName] and Color3.fromRGB(0, 120, 215) or Color3.fromRGB(35, 35, 35) end end)
+end
+
 CreateBtn(MainContainer, "Auto Win Zone 1", "Z1")
 CreateBtn(MainContainer, "Auto Win Zone 2", "Z2")
 CreateBtn(MainContainer, "Auto Rebirth", "RB")
 CreateBtn(PlayerContainer, "Enable WalkSpeed", "WS")
 CreateBtn(PlayerContainer, "Anti AFK", "AFK")
 
--- Main Logic
+-- Main Logic Loop (BodyVelocity Instan 250 / 1000)
 task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
     
@@ -107,9 +106,9 @@ task.spawn(function()
             bv.Name = "FlyVel"
             bv.MaxForce = Vector3.new(1, 1, 1) * 1e6
             
-            -- TINGGI 250, SPEED 1000
-            local destination = Vector3.new(targetPos.X, 250, targetPos.Z)
-            bv.Velocity = (destination - root.Position).Unit * 1000
+            -- Set ketinggian ke 250, kecepatan ke 1000
+            local targetVector = Vector3.new(targetPos.X, 250, targetPos.Z)
+            bv.Velocity = (targetVector - root.Position).Unit * 1000
             
             task.wait(0.2)
             if bv then bv:Destroy() end
