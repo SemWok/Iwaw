@@ -74,6 +74,8 @@ RedLineHoriz.BorderSizePixel = 0; RedLineHoriz.ZIndex = 5
 local ChangelogBtn = Instance.new("TextButton", Sidebar); ChangelogBtn.Size = UDim2.new(1, 0, 0, 40); ChangelogBtn.Text = "Changelog"; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); ChangelogBtn.TextColor3 = Color3.new(1, 1, 1); ChangelogBtn.Font = Enum.Font.GothamBold; ChangelogBtn.TextSize = 14
 local MainFeaturesBtn = Instance.new("TextButton", Sidebar); MainFeaturesBtn.Size = UDim2.new(1, 0, 0, 40); MainFeaturesBtn.Position = UDim2.new(0, 0, 0, 45); MainFeaturesBtn.Text = "Main Features"; MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MainFeaturesBtn.TextColor3 = Color3.new(1, 1, 1); MainFeaturesBtn.Font = Enum.Font.GothamBold; MainFeaturesBtn.TextSize = 14
 local PlayerFeaturesBtn = Instance.new("TextButton", Sidebar); PlayerFeaturesBtn.Size = UDim2.new(1, 0, 0, 40); PlayerFeaturesBtn.Position = UDim2.new(0, 0, 0, 90); PlayerFeaturesBtn.Text = "Player"; PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.TextColor3 = Color3.new(1, 1, 1); PlayerFeaturesBtn.Font = Enum.Font.GothamBold; PlayerFeaturesBtn.TextSize = 14
+-- Menu Music (Baru)
+local MusicBtn = Instance.new("TextButton", Sidebar); MusicBtn.Size = UDim2.new(1, 0, 0, 40); MusicBtn.Position = UDim2.new(0, 0, 0, 135); MusicBtn.Text = "Music"; MusicBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MusicBtn.TextColor3 = Color3.new(1, 1, 1); MusicBtn.Font = Enum.Font.GothamBold; MusicBtn.TextSize = 14
 
 -- User Info
 local UserFrame = Instance.new("Frame", Sidebar); UserFrame.Size = UDim2.new(1, 0, 0, 40); UserFrame.Position = UDim2.new(0, 0, 1, -40); UserFrame.BackgroundTransparency = 1
@@ -107,6 +109,8 @@ end)
 local ChangelogContainer = Instance.new("Frame", MainMenu); ChangelogContainer.Size = UDim2.new(1, -150, 1, -80); ChangelogContainer.Position = UDim2.new(0, 150, 0, 40); ChangelogContainer.BackgroundTransparency = 1; ChangelogContainer.Visible = false
 local MainContainer = Instance.new("Frame", MainMenu); MainContainer.Size = UDim2.new(1, -150, 1, -80); MainContainer.Position = UDim2.new(0, 150, 0, 40); MainContainer.BackgroundTransparency = 1
 local PlayerContainer = Instance.new("Frame", MainMenu); PlayerContainer.Size = UDim2.new(1, -150, 1, -80); PlayerContainer.Position = UDim2.new(0, 150, 0, 40); PlayerContainer.BackgroundTransparency = 1; PlayerContainer.Visible = false
+-- Container Music
+local MusicContainer = Instance.new("Frame", MainMenu); MusicContainer.Size = UDim2.new(1, -150, 1, -80); MusicContainer.Position = UDim2.new(0, 150, 0, 40); MusicContainer.BackgroundTransparency = 1; MusicContainer.Visible = false
 
 -- Data Changelog
 local SupportGames = {"MBG DRIVER", "INSIDE BRAINROT HEAD", "LORI'S NIGHTMARE", "BECOME A BRAINROT", "+1 SPEED BRICK ESCAPE", "LOGO FOR SOCCER CARDS", "MERGER A NUKE", "+1 SPEED TITAN ESCAPE", "BE A YOUTUBER", "PHONK CLICKER", "FIND THE BRAINROT MORPHS"}
@@ -134,6 +138,32 @@ local function CreateBtn(parentFrame, name, varName, callback)
     task.spawn(function() while task.wait(0.1) do btn.BackgroundColor3 = _G[varName] and Color3.fromRGB(0, 120, 215) or Color3.fromRGB(35, 35, 35) end end)
 end
 
+-- Fungsi Musik
+local function CreateMusicBtn(name, id, duration, pos)
+    local frame = Instance.new("Frame", MusicContainer); frame.Size = UDim2.new(0.9, 0, 0, 70); frame.Position = pos; frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30); Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
+    local title = Instance.new("TextLabel", frame); title.Text = name; title.Size = UDim2.new(1, -50, 0, 30); title.BackgroundTransparency = 1; title.TextColor3 = Color3.new(1, 1, 1); title.Font = Enum.Font.GothamBold
+    local bar = Instance.new("Frame", frame); bar.Size = UDim2.new(0.9, 0, 0, 6); bar.Position = UDim2.new(0.05, 0, 0.6, 0); bar.BackgroundColor3 = Color3.fromRGB(50, 50, 50); Instance.new("UICorner", bar).CornerRadius = UDim.new(0, 3)
+    local progress = Instance.new("Frame", bar); progress.Size = UDim2.new(0, 0, 1, 0); progress.BackgroundColor3 = Color3.fromRGB(138, 43, 226)
+    local playBtn = Instance.new("TextButton", frame); playBtn.Size = UDim2.new(0, 30, 0, 30); playBtn.Position = UDim2.new(0.92, 0, 0.1, 0); playBtn.Text = "■"; playBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40); Instance.new("UICorner", playBtn).CornerRadius = UDim.new(0, 4)
+    
+    local soundObj = Instance.new("Sound", workspace); soundObj.SoundId = "rbxassetid://"..id
+    local playing = false
+    playBtn.MouseButton1Click:Connect(function()
+        playing = not playing
+        playBtn.Text = playing and "▶" or "■"
+        if playing then soundObj:Play() else soundObj:Stop() end
+    end)
+    task.spawn(function()
+        while task.wait(0.1) do
+            if playing then progress.Size = UDim2.new(math.min(soundObj.TimePosition/duration, 1), 0, 1, 0) else progress.Size = UDim2.new(0, 0, 1, 0) end
+        end
+    end)
+end
+
+CreateMusicBtn("Low Cristal", 110919391228823, 97, UDim2.new(0.05, 0, 0.05, 0))
+CreateMusicBtn("Cool beat", 110788401793874, 97, UDim2.new(0.05, 0, 0.35, 0))
+
+-- Fungsi Layout
 local function UpdateLayout(container)
     local input = string.lower(SearchBox.Text)
     local xPos = {0.03, 0.52}
@@ -152,9 +182,10 @@ local function UpdateLayout(container)
 end
 
 -- Tab Logic
-ChangelogBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = true; MainContainer.Visible = false; PlayerContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
-MainFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = true; PlayerContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
-PlayerFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = false; PlayerContainer.Visible = true; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35) end)
+ChangelogBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = true; MainContainer.Visible = false; PlayerContainer.Visible = false; MusicContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MusicBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
+MainFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = true; PlayerContainer.Visible = false; MusicContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MusicBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
+PlayerFeaturesBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = false; PlayerContainer.Visible = true; MusicContainer.Visible = false; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35); MusicBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25) end)
+MusicBtn.MouseButton1Click:Connect(function() ChangelogContainer.Visible = false; MainContainer.Visible = false; PlayerContainer.Visible = false; MusicContainer.Visible = true; ChangelogBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MainFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); PlayerFeaturesBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25); MusicBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35) end)
 
 -- Add Buttons
 CreateBtn(MainContainer, "Auto Win Zone 1", "Z1", function() end)
@@ -186,36 +217,4 @@ task.delay(5.5, function() if LoadingFrame.Parent then LoadingFrame:Destroy(); M
 -- Main Logic Loop
 task.spawn(function()
     local function getRoot() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
-    local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") end
-    
-    local BP, BG
-    local Z1_Pos = Vector3.new(5129.90, 698.84, -2558.50)
-    local Z2_Pos = Vector3.new(-168.27, 823.60, 26801.41)
-    
-    while task.wait(0.1) do
-        if LocalPlayer.Character and getRoot() then
-            -- Logika gerak ke koordinat target tanpa teleport (CFrame)
-            local targetPos = (_G.Z1 and Z1_Pos) or (_G.Z2 and Z2_Pos)
-            
-            if targetPos then
-                if not BP then
-                    BP = Instance.new("BodyPosition", getRoot())
-                    BP.MaxForce = Vector3.new(1/0, 1/0, 1/0)
-                    BP.P = 10000 
-                    
-                    BG = Instance.new("BodyGyro", getRoot())
-                    BG.MaxTorque = Vector3.new(1/0, 1/0, 1/0)
-                end
-                BP.Position = targetPos
-            else
-                if BP then BP:Destroy(); BP = nil end
-                if BG then BG:Destroy(); BG = nil end
-            end
-            
-            -- Fitur Lainnya (Tetap utuh)
-            if _G.RB then pcall(function() RS.BrickRebirthRequest:FireServer() end) end
-            if _G.WS and getHumanoid() then getHumanoid().WalkSpeed = 100 end
-            if _G.AFK then pcall(function() VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame); task.wait(0.1); VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame) end); task.wait(30) end
-        end
-    end
-end)
+    local function getHumanoid() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Human
